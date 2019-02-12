@@ -13,7 +13,7 @@
  *  @copyright (c) 2019 Roger A. Clarke. All rights reserved.
  *  @author    Roger Clarke (muddiman | .muddicode)
  *  @link      https://www.roger-clarke.com |   https://www.muddicode.com
- *  @email     rogerclarke00@hotmail.com    |   muddiman@hotmail.com  
+ *  @email     rogerclarke00@hotmail.com    |   muddiman@hotmail.com             (muddi@muddicode.com | rclarke@roger-clarke.com) 
  *  @version   1.0.0
  *  @since     2019-02-7
  *  @download  https://www.github.com/muddiman/Matrix
@@ -27,25 +27,25 @@
 ***************************************************************************************************************************************************************************************** */
 
 /*    THE GLOBALS      */
-const REFRESH_RATE = 30;                // in Hz or fps
-const INTERVAL = 1000/REFRESH_RATE;     // in milliseconds
-const WIDTH = window.innerWidth;        // 1200;                     // canvas width in px
-const HEIGHT = window.innerHeight;      // 500;                     // canvas height in px
+const REFRESH_RATE = 30;                                            // in Hz or fps
+const INTERVAL = 1000/REFRESH_RATE;                                 // in milliseconds
+const WIDTH = window.innerWidth;                                    // canvas width in px
+const HEIGHT = window.innerHeight;                                  // canvas height in px
 const CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '$', '#', '%', '^', '&', '*', '(', ')', '-', '=', '+', '{', '?', '>'];
 const minCHARACTERS = Math.floor(HEIGHT/15);
 const maxCHARACTERS = 2 * minCHARACTERS;
-const maxROWS = Math.floor(HEIGHT/15) + 50 ;    // 50 acts as a buffer
-const maxCOLUMNS = WIDTH/10;                 // To be accurately determined
+const maxROWS = Math.floor(HEIGHT/15) + 50 ;                        // 50 acts as a buffer
+const maxCOLUMNS = WIDTH/10;                                        // To be accurately determined
 const maxSTREAMERS = maxCOLUMNS;
 const OPAQUE = 1.0;
-const TRANSLUCENT = 0.8;               // 15% translucent
+const TRANSLUCENT = 0.8;                                            // 20% translucent
 const TRANSPARENT = 0;
 const FONT_SIZE = `12`;
 const FONT_SIZE13 = `13`;
 const FONT_SIZE14 = `14`;
 const FONT = `monaco`;
 
-var listOfStreamers = [];               // listOfStreamers.length == maxStreamers (120)
+var listOfStreamers = [];                                           // listOfStreamers.length == maxStreamers (120)
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*   CLASSES & OBJECTS        */
@@ -63,10 +63,9 @@ var screenOBJ = {
                     this.CANVAS.style  = `position: absolute; background-color: rgba(0, 0, 0, ${this.alpha}); z-index: 0`;        // n = 0 or 1 && alpha = OPAQUE(1.0) or TRANSPARENT(0) or 15% TRANSLUCENT (0.85) 
                     document.body.appendChild(this.CANVAS);
                     this.CONTEXT = this.CANVAS.getContext("2d"); 
-                   // this.animate = setInterval(__updateFrame__, INTERVAL);
                 },
     stop        : function () {
-                    clearInterval(this.animatation);
+                    clearInterval(this.animation);
                 },
     clear       : function () {
                     this.CONTEXT.clearRect(0, 0, this.CANVAS.width, this.CANVAS.height);
@@ -80,7 +79,7 @@ function streamClass(n) {
         this.column       = n;
         this.headPosition = 0;
         this.streamLength = randomStreamLength();
-        this.speedSetting = Math.floor(Math.random()*65) + 5;           // random and arbitrary speed between 5 and 70
+        this.speedSetting = Math.floor(Math.random()*65) + 5;                       // random and arbitrary speed between 5 and 70
     };                
 }
 
@@ -96,7 +95,7 @@ function runTheMatrix(screenAlpha) {
 }
 
 function createStreamer() {
-    let streamer = [];                      // an array of CHARACTERS defined above
+    let streamer = [];                                                              // an array of CHARACTERS defined above
     let lengthOfStream = randomStreamLength();         
     for (i=0; i<lengthOfStream;i++) {
         let index = Math.floor(Math.random() * CHARACTERS.length);
@@ -110,8 +109,6 @@ function createListOfStreamers() {
     for (n=0;n<maxSTREAMERS;n++) {
         list[n] = new streamClass(n);
     }
-    console.log(`Minimum Stream Length: ${minCHARACTERS}`);                 // debugging
-    console.log(`Maximum Stream Length: ${maxCHARACTERS}`);                 // debugging
     return list;
 }
 
@@ -123,19 +120,19 @@ function __updateFrame__() {
 }
 
 function randomStreamLength() {
-    return Math.floor((Math.random() * maxCHARACTERS/2) + minCHARACTERS);  // confusing but i want the reader to get a sense that it is a random length between the minCHARACTERS & maxCHARACTERS
+    return Math.floor((Math.random() * maxCHARACTERS/2) + minCHARACTERS);           // confusing but i want the reader to get a sense that it is a random length between the minCHARACTERS & maxCHARACTERS
 }
 
 function displayStream(streamObject, line) {
     for (streamObject.row = 0; streamObject.row <= streamObject.headPosition; streamObject.row++) {
         screenOBJ.CONTEXT.font = `${FONT_SIZE}px ${FONT}`;
         screenOBJ.CONTEXT.fillStyle = `rgba(0, 255, 0,  ${OPAQUE})`;                // green, opaque
-        if (streamObject.speedSetting <= 35) {                                    // Slow moving streams get a darker color to give the effect that its further away
+        if (streamObject.speedSetting <= 35) {                                      // Slow moving streams get a darker color to give the effect that its further away
             screenOBJ.CONTEXT.fillStyle = `rgba(0, 0, 0,  ${OPAQUE})`;              // BLACK, opaque
             screenOBJ.CONTEXT.font = `0px ${FONT}`;
 
         } else {
-            if (streamObject.speedSetting > 35 && streamObject.speedSetting < 50) {                    // Slow moving streams get a darker color to give the effect that its further away
+            if (streamObject.speedSetting > 35 && streamObject.speedSetting < 50) { // Slow moving streams get a darker color to give the effect that its further away
                 screenOBJ.CONTEXT.fillStyle = `rgba(0, 125, 0,  ${OPAQUE})`;        // DARK green, opaque
             }
             if (streamObject.headPosition > streamObject.streamLength) {
@@ -163,53 +160,50 @@ function displayStream(streamObject, line) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
                                             /*      MAIN PROGRAM        */
-//  run after six seconds of inactivity
-//  stop the matrix on a mousemove event
+//  run after eight(8) seconds of inactivity
+//  stop the matrix on a mousemove event (or a keystroke event)
 
 function removeMatrix() {
     screenOBJ.CANVAS.removeEventListener("mousemove", removeMatrix);
+    window.removeEventListener("keypress", removeMatrix);
     screenOBJ.stop();
     screenOBJ.clear();
-    screenOBJ.CANVAS.style.display = "none";
+    screenOBJ.alpha = 0;
     screenOBJ.init();
     matrix(TRANSLUCENT);
-    // document.getElementById("matrixScreen").style.visibility = "hidden";
-    // (getDarker, 3000);
-    // setTimeout(matrix, 6000);
 }
 
 function matrix(transparency) {
-    getDarker();
-    // screenOBJ.init();
+        setTimeout(() =>{
+            getDarker();
+    }, 8000);
     setTimeout(() => {
-        listOfStreamers = createListOfStreamers();      //  load the matrix
-        runTheMatrix(transparency);                                 //  run the matrix
+        listOfStreamers = createListOfStreamers();                          //  load the matrix
+        runTheMatrix(transparency);                                         //  run the matrix
         screenOBJ.CANVAS.addEventListener("mousemove", removeMatrix);
-    }, 7000);
-                            //  initialize the screen                  
-
+        window.addEventListener("keypress", removeMatrix);
+    }, 10000);
 }   
 
-function getDarker() {                  //document.getElementById("matrixScreen").style.visibility = "visible";
+function getDarker() {                  
     screenOBJ.alpha = 0;
-    let darker = setInterval(frame, 100);
-    screenOBJ.init();
+    let darker = setInterval(frame, 100);                                   // gets dark in two(2) seconds or 2,000ms
     function frame() {
         if (screenOBJ.alpha < TRANSLUCENT) {
-            screenOBJ.alpha += 0.03;
+            screenOBJ.alpha += 0.04;
             screenOBJ.init();
-            // screenOBJ.CANVAS.style.color = rgba(0,0,0, alpha);
         } else {
             clearInterval(darker);
         }
     }
 }
 
-// setTimeout(getDarker, 3000);
+// Call The Main Function
 matrix(TRANSLUCENT);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
+                                                /*      TODO: Refactor code & Add sound
 /*      AUDIO       */
 /*
 var sound = document.createElement("audio");
