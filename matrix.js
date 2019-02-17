@@ -27,7 +27,7 @@
 ***************************************************************************************************************************************************************************************** */
 
 /*    THE GLOBALS      */
-const REFRESH_RATE = 30;                                            // in Hz or fps
+const REFRESH_RATE = 24;                                            // in Hz or fps
 const INTERVAL = 1000/REFRESH_RATE;                                 // in milliseconds
 const WIDTH = window.innerWidth;                                    // canvas width in px
 const HEIGHT = window.innerHeight;                                  // canvas height in px
