@@ -34,10 +34,11 @@
 
 /*    THE GLOBALS      */
 //  imports
-import { HEIGHT, ListOfStreamersClass, maxSTREAMERS } from "/lib/stream.mjs";
+import { ListOfStreamersClass, maxSTREAMERS } from "/lib/stream.mjs";
+import { HEIGHT } from "../lib/display.mjs";                                  // canvas height in px
 import { Screen } from "/lib/display.mjs";
 import { gEngine } from "/lib/engine.mjs";
-//  constanst
+//  constants
 const maxROWS = Math.floor(HEIGHT/15) + 50 ;                        // 50 acts as a buffer
 const OPAQUE = 1.0;
 const TRANSLUCENT = 0.8;
@@ -50,7 +51,7 @@ const FONT = `monaco`;
 // const TRANSPARENT = 0;
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*   CLASSES & OBJECTS        */
+/*   OBJECTS        */
 
 /*  create a new screen instance    */
 var screenOBJ = new Screen();
@@ -59,13 +60,33 @@ var gameEngine = new gEngine(INTERVAL, frameUpdate);
 /*  create a new matrix instance    */
 var listOfStreamers = new ListOfStreamersClass();                          //  load the matrix
 
-// var matrix = new matrix();
+// var matrix = new Matrix();   // which includes streams
 /*  create a new    */
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*      FUNCTIONS       */
+/*
+var render = function() {
+    displayStream.render();
+};
 
-function frameUpdate() {                            // update function
+var update = function() {
+    matrix.update();
+};
+*/
+
+/*      event listeners     */
+/*
+window.addEventListener("resize",     resizeHandler);
+window.addEventListener("keydown",    keystrokeHandler);
+window.addEventListener("keyup",      keystrokeHandler);
+window.addEventListener("mousemove",  mouseEventHandler);
+window.addEventListener("mouseclick", mouseEventHandler);
+display.resize();
+gEngine.start();
+*/
+
+function frameUpdate() {                                   // update function
     screenOBJ.clear();
     renderStreams(listOfStreamers.list);                   // render function
 }
@@ -106,7 +127,7 @@ function displayStream(streamObject, line) {
         }               
         screenOBJ.CONTEXT.fillText(streamObject.stream[streamObject.row], line * 10, (streamObject.row * 15));
     }
-    streamObject.headPosition = (streamObject.headPosition + streamObject.speedSetting/100) % maxROWS;
+    streamObject.headPosition = (streamObject.headPosition + streamObject.speedSetting/100) % (maxROWS + streamObject.streamLength);
     if (streamObject.headPosition === 0) {
         streamObject.init();             
     }
