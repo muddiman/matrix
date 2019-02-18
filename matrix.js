@@ -1,11 +1,11 @@
-//  fliename:   matrix.js
+//  filename:   matrix.js
 //  path:       N/A
 
 /*
                                                 Title: THE MATRIX CODE RAIN EFFECT
                                                 Language: Javascript
                                                 Programmer: Roger A. Clarke (A.K.A. .muddicode)
-                                                Code: Main Program    (the only source code file for this project)                        
+                                                Code: Main Program    (Main Program Logic)                        
 */
 
 /** **************************************************************************************************************************************************************
@@ -14,7 +14,7 @@
  *  @author    Roger Clarke (muddiman | .muddicode)
  *  @link      https://www.roger-clarke.com |   https://www.muddicode.com
  *  @email     rogerclarke00@hotmail.com    |   muddiman@hotmail.com             (muddi@muddicode.com | rclarke@roger-clarke.com) 
- *  @version   1.0.0
+ *  @version   1.1.0
  *  @since     2019-02-7
  *  @download  https://www.github.com/muddiman/Matrix
  *  @license   NOT for 'commercial use', otherwise free to use, free to distribute
@@ -26,101 +26,55 @@
  * 
 ***************************************************************************************************************************************************************************************** */
 
+// Matrix class hands the Matrix to the Display
+// Display renders it on every frame 
+// Engine crunches all the frames at the specified frame_rate
+// controller input: stops when an event from keyboard, mouse or touch is received
+
+
 /*    THE GLOBALS      */
-const REFRESH_RATE = 24;                                            // in Hz or fps
-const INTERVAL = 1000/REFRESH_RATE;                                 // in milliseconds
-const WIDTH = window.innerWidth;                                    // canvas width in px
-const HEIGHT = window.innerHeight;                                  // canvas height in px
-const CHARACTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '$', '#', '%', '^', '&', '*', '(', ')', '-', '=', '+', '{', '?', '>'];
-const minCHARACTERS = Math.floor(HEIGHT/15);
-const maxCHARACTERS = 2 * minCHARACTERS;
+//  imports
+import { HEIGHT, ListOfStreamersClass, maxSTREAMERS } from "/lib/stream.mjs";
+import { Screen } from "/lib/display.mjs";
+import { gEngine } from "/lib/engine.mjs";
+//  constanst
 const maxROWS = Math.floor(HEIGHT/15) + 50 ;                        // 50 acts as a buffer
-const maxCOLUMNS = WIDTH/10;                                        // To be accurately determined
-const maxSTREAMERS = maxCOLUMNS;
 const OPAQUE = 1.0;
-const TRANSLUCENT = 0.8;                                            // 20% translucent
-const TRANSPARENT = 0;
+const TRANSLUCENT = 0.8;
+const REFRESH_RATE = 45;                                            // in Hz or fps
+const INTERVAL = 1000/REFRESH_RATE;                                 // in milliseconds                                           // 20% translucent
 const FONT_SIZE = `12`;
 const FONT_SIZE13 = `13`;
 const FONT_SIZE14 = `14`;
 const FONT = `monaco`;
-
-var listOfStreamers = [];                                           // listOfStreamers.length == maxStreamers (120)
+// const TRANSPARENT = 0;
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*   CLASSES & OBJECTS        */
 
-var screenOBJ = {                            
-    CANVAS      : document.createElement("canvas"),
-    alpha       : OPAQUE,
-    animate     : function () {
-                    this.animation = setInterval(__updateFrame__, INTERVAL);
-                },   
-    init        : function () {
-                    this.CANVAS.width  = WIDTH;
-                    this.CANVAS.height = HEIGHT;
-                    this.CANVAS.id = `matrixScreen`;
-                    this.CANVAS.style  = `position: absolute; background-color: rgba(0, 0, 0, ${this.alpha}); z-index: 0`;        // n = 0 or 1 && alpha = OPAQUE(1.0) or TRANSPARENT(0) or 15% TRANSLUCENT (0.85) 
-                    document.body.appendChild(this.CANVAS);
-                    this.CONTEXT = this.CANVAS.getContext("2d"); 
-                },
-    stop        : function () {
-                    clearInterval(this.animation);
-                },
-    clear       : function () {
-                    this.CONTEXT.clearRect(0, 0, this.CANVAS.width, this.CANVAS.height);
-                }  
-};
+/*  create a new screen instance    */
+var screenOBJ = new Screen();
+/*  create a new game engine instance   */
+var gameEngine = new gEngine(INTERVAL, frameUpdate);
+/*  create a new matrix instance    */
+var listOfStreamers = new ListOfStreamersClass();                          //  load the matrix
 
-function streamClass(n) {        
-    this.stream = createStreamer();
-    this.init   = function () {
-        this.row          = 0;
-        this.column       = n;
-        this.headPosition = 0;
-        this.streamLength = randomStreamLength();
-        this.speedSetting = Math.floor(Math.random()*65) + 5;                       // random and arbitrary speed between 5 and 70
-    };                
-}
+// var matrix = new matrix();
+/*  create a new    */
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*      FUNCTIONS       */
 
-function runTheMatrix(screenAlpha) {                       
-    for (i=0; i < maxSTREAMERS; i++) {
-         listOfStreamers[i].init();
-    }
-    screenOBJ.alpha = screenAlpha;
-    screenOBJ.animate();                           
-}
-
-function createStreamer() {
-    let streamer = [];                                                              // an array of CHARACTERS defined above
-    let lengthOfStream = randomStreamLength();         
-    for (i=0; i<lengthOfStream;i++) {
-        let index = Math.floor(Math.random() * CHARACTERS.length);
-        streamer[i] = CHARACTERS[index];
-    }
-    return streamer;
-}
-
-function createListOfStreamers() {
-    let list = [];
-    for (n=0;n<maxSTREAMERS;n++) {
-        list[n] = new streamClass(n);
-    }
-    return list;
-}
-
-function __updateFrame__() {
+function frameUpdate() {                            // update function
     screenOBJ.clear();
-    for (i=0;i<maxSTREAMERS;i++) {
-        displayStream(listOfStreamers[i], i);
-    }
+    renderStreams(listOfStreamers.list);                   // render function
 }
-
-function randomStreamLength() {
-    return Math.floor((Math.random() * maxCHARACTERS/2) + minCHARACTERS);           // confusing but i want the reader to get a sense that it is a random length between the minCHARACTERS & maxCHARACTERS
+ 
+function renderStreams(streamList) {
+    let i;
+    for (i=0;i<maxSTREAMERS;i++) {
+        displayStream(streamList[i], i);
+    }
 }
 
 function displayStream(streamObject, line) {
@@ -156,7 +110,7 @@ function displayStream(streamObject, line) {
     if (streamObject.headPosition === 0) {
         streamObject.init();             
     }
-}
+} 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
                                             /*      MAIN PROGRAM        */
@@ -164,26 +118,14 @@ function displayStream(streamObject, line) {
 //  stop the matrix on a mousemove event (or a keystroke event)
 
 function removeMatrix() {
-    screenOBJ.CANVAS.removeEventListener("mousemove", removeMatrix);
+    screenOBJ.CANVAS.removeEventListener("mousemove", removeMatrix);        // remove listeners
     window.removeEventListener("keypress", removeMatrix);
-    screenOBJ.stop();
+    gameEngine.stop();
     screenOBJ.clear();
     screenOBJ.alpha = 0;
     screenOBJ.init();
-    matrix(TRANSLUCENT);
+    theMatrix(TRANSLUCENT);
 }
-
-function matrix(transparency) {
-        setTimeout(() =>{
-            getDarker();
-    }, 8000);
-    setTimeout(() => {
-        listOfStreamers = createListOfStreamers();                          //  load the matrix
-        runTheMatrix(transparency);                                         //  run the matrix
-        screenOBJ.CANVAS.addEventListener("mousemove", removeMatrix);
-        window.addEventListener("keypress", removeMatrix);
-    }, 10000);
-}   
 
 function getDarker() {                  
     screenOBJ.alpha = 0;
@@ -198,8 +140,23 @@ function getDarker() {
     }
 }
 
+function theMatrix(transparency) {
+    setTimeout(() =>{
+            getDarker();
+    }, 8000);
+    setTimeout(() => {
+        listOfStreamers.init();
+        screenOBJ.alpha = transparency;
+        gameEngine.start();                                                 //  run the matrix
+        screenOBJ.CANVAS.addEventListener("mousemove", removeMatrix);       // initialize listeners
+        window.addEventListener("keypress", removeMatrix);
+    }, 10000);
+}   
+
+
 // Call The Main Function
-matrix(TRANSLUCENT);
+theMatrix(TRANSLUCENT);
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
