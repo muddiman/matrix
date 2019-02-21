@@ -1,4 +1,4 @@
-//  filename:   matrix.js
+//  filename:   main.js
 //  path:       N/A
 
 /*
@@ -29,10 +29,10 @@
 // Matrix class handles all the character streams logic and updates the streams position every frame, and subsequently the updated Matrix to the Display
 // Display renders it on every frame 
 // Engine crunches all the frames at the specified frame_rate
-// Inputs: stops when an event from keyboard, mouse or touch is detected
+// if Necessary: An Input Class deals with event handling
 
 /*  the globals */
-const FPS = 45;
+const FPS = 60;
 const TRANSPARENT =   0;
 const TRANSLUCENT = 0.8;
 /*  the imports */
@@ -41,7 +41,7 @@ import { Matrix }  from "/lib/matrix.mjs";
 import { gEngine } from "/lib/engine.mjs";
 
 /*  Display */
-var display = new Display("green");                                                                 //  TODO:   add color to matrix (2.0.0)
+var display = new Display("green");                                        //  TODO:   add color to matrix (2.0.0)
 /*  Matrix  */
 var matrix  = new Matrix();
 /*  Engine  */
@@ -51,48 +51,57 @@ var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.ren
 /*  functions   */
 //  event handling functions 
 function loadListeners() { 
-    window.addEventListener("keypress", removeMatrix);
-    display.screen.CANVAS.addEventListener("mousemove", removeMatrix);
-    //  @TODO:   add a 'touch' event listener  (1.3.0)     
+  window.addEventListener("resize", resizeWindow);                          // get a new display (and Screen)  
+  window.addEventListener("keypress", removeMatrix);
+  window.addEventListener("touchmove", removeMatrix);
+  display.screen.CANVAS.addEventListener("mousemove", removeMatrix);       
 }
 
 function removeListeners() {
-    window.removeEventListener("keypress", removeMatrix);                                          //  remove the event listeners
-    display.screen.CANVAS.removeEventListener("mousemove", removeMatrix);
-    //  @TODO:   add a 'touch' event listener  (1.3.0)     
+  window.removeEventListener("keypress", removeMatrix);
+  window.removeEventListener("touchmove", removeMatrix);                     //  remove the event listeners
+  display.screen.CANVAS.removeEventListener("mousemove", removeMatrix);
+}
+
+function resizeWindow() {
+  removeMatrix();
+  display = new Display("green");                                     //  a new display with updated screen dimensions
+  matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
+  engine  = new gEngine();                                           
+  theMatrix();
 }
 
 //  Matrix functions
 function theMatrix() {
-    var darkness = setTimeout(() => {                                       //  dim screen after 8 secs
-      display.screen.getDarker(TRANSLUCENT);
-      loadListeners();
-    }, 8000);
-    var theMatrix = setTimeout(() => {                                      //  go into the matrix after 10 secs
-      matrix.streamersArr.init();
-      display.screen.setAlpha(TRANSLUCENT);
-      engine.start();
-    }, 10000);
+  var darkness = setTimeout(() => {                                         //  dim screen after 8 secs
+    display.screen.getDarker(TRANSLUCENT);
+    loadListeners();
+  }, 8000);
+  var theMatrix = setTimeout(() => {                                        //  go into the matrix after 10 secs
+    matrix.streamersArr.init();
+    display.screen.setAlpha(TRANSLUCENT);
+    engine.start();
+  }, 10000);
   }
 
 function removeMatrix() {
-    removeListeners();
-    // clearTimeout(darkness);                                                 //  clear the timeouts
-    // clearTimeout(theMatrix);
-    engine.stop();
-    display.screen.clear(); 
-    display.screen.setAlpha(TRANSPARENT);                                     //  resets the transparency cycle for getDarker function
-    display.screen.init();
-    theMatrix();
+  removeListeners();
+  // clearTimeout(darkness);                                                 //  clear the timeouts
+  // clearTimeout(theMatrix);
+  engine.stop();
+  display.screen.clear(); 
+  display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
+  display.screen.init();
+  theMatrix();
 }
 
 /*
-*       Only four(4) functions are necessary to run the Matrix Rain Effect (MRE) in the browser.
-*       My intention was to make this code layout as clean as possible, and easy to read for JavaScript beginners
+*       Only five(5) functions are necessary to run the Matrix Rain Effect (MRE) in the browser (actually, only two).
+*       My intention was to make this code layout as clean as possible, and easy to follow for JavaScript beginners.
 *       If the code could be refractored (not sure if that is even a word) even further for 'ease of read' 
 *       please feel free to send me your code to the contact information above.
 */
 
-//--------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
 /*  call the Matrix */
 theMatrix();

@@ -1,0 +1,65 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'i',
+1 verbose cli   'local-web-server' ]
+2 info using npm@1.3.2
+3 info using node@v0.10.13
+4 verbose node symlink C:\Program Files (x86)\nodejs\\node.exe
+5 verbose cache add [ 'local-web-server', null ]
+6 verbose cache add name=undefined spec="local-web-server" args=["local-web-server",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'local-web-server',
+7 verbose parsed url   path: 'local-web-server',
+7 verbose parsed url   href: 'local-web-server' }
+8 silly lockFile 5ab94544-local-web-server local-web-server
+9 verbose lock local-web-server C:\Users\roger\AppData\Roaming\npm-cache\5ab94544-local-web-server.lock
+10 silly lockFile 5ab94544-local-web-server local-web-server
+11 silly lockFile 5ab94544-local-web-server local-web-server
+12 verbose addNamed [ 'local-web-server', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 514dad63-local-web-server local-web-server@
+15 verbose lock local-web-server@ C:\Users\roger\AppData\Roaming\npm-cache\514dad63-local-web-server.lock
+16 silly addNameRange { name: 'local-web-server', range: '*', hasData: false }
+17 verbose url raw local-web-server
+18 verbose url resolving [ 'https://registry.npmjs.org/', './local-web-server' ]
+19 verbose url resolved https://registry.npmjs.org/local-web-server
+20 info trying registry request attempt 1 at 20:15:10
+21 http GET https://registry.npmjs.org/local-web-server
+22 info retry will retry, error on last attempt: Error: CERT_UNTRUSTED
+23 info trying registry request attempt 2 at 20:15:20
+24 http GET https://registry.npmjs.org/local-web-server
+25 info retry will retry, error on last attempt: Error: CERT_UNTRUSTED
+26 info trying registry request attempt 3 at 20:16:20
+27 http GET https://registry.npmjs.org/local-web-server
+28 silly lockFile 514dad63-local-web-server local-web-server@
+29 silly lockFile 514dad63-local-web-server local-web-server@
+30 error Error: CERT_UNTRUSTED
+30 error     at SecurePair.<anonymous> (tls.js:1349:32)
+30 error     at SecurePair.EventEmitter.emit (events.js:92:17)
+30 error     at SecurePair.maybeInitFinished (tls.js:962:10)
+30 error     at CleartextStream.read [as _read] (tls.js:463:15)
+30 error     at CleartextStream.Readable.read (_stream_readable.js:320:10)
+30 error     at EncryptedStream.write [as _write] (tls.js:366:25)
+30 error     at doWrite (_stream_writable.js:219:10)
+30 error     at writeOrBuffer (_stream_writable.js:209:5)
+30 error     at EncryptedStream.Writable.write (_stream_writable.js:180:11)
+30 error     at write (_stream_readable.js:573:24)
+31 error If you need help, you may report this log at:
+31 error     <http://github.com/isaacs/npm/issues>
+31 error or email it to:
+31 error     <npm-@googlegroups.com>
+32 error System Windows_NT 6.2.9200
+33 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "i" "local-web-server"
+34 error cwd X:\dev\projects\MATRIX\matrix
+35 error node -v v0.10.13
+36 error npm -v 1.3.2
+37 verbose exit [ 1, true ]
