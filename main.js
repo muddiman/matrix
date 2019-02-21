@@ -67,7 +67,7 @@ function resizeWindow() {
   removeMatrix();
   display = new Display("green");                                     //  a new display with updated screen dimensions
   matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
-  engine  = new gEngine();                                           
+  engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});                                          
   theMatrix();
 }
 
