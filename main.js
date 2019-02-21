@@ -76,12 +76,12 @@ function theMatrix() {
   var darkness = setTimeout(() => {                                         //  dim screen after 8 secs
     display.screen.getDarker(TRANSLUCENT);
     loadListeners();
-  }, 8000);
+  }, 4000);
   var theMatrix = setTimeout(() => {                                        //  go into the matrix after 10 secs
     matrix.streamersArr.init();
     display.screen.setAlpha(TRANSLUCENT);
     engine.start();
-  }, 10000);
+  }, 6000);
   }
 
 function removeMatrix() {
