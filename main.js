@@ -65,15 +65,16 @@ function removeListeners() {
 
 function resizeWindow() {
   removeMatrix();
-  display = new Display("green");                                     //  a new display with updated screen dimensions
-  matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
-  engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});                                          
+  display.init();    // = new Display("green");                                     //  a new display with updated screen dimensions
+  matrix.init();
+  // matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
+  // engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});                                          
   theMatrix();
 }
 
 //  Matrix functions
-function theMatrix() {
-  var darkness = setTimeout(() => {                                         //  dim screen after 8 secs
+async function theMatrix() {
+  var darkness = setTimeout( () => {                                         //  dim screen after 8 secs
     display.screen.getDarker(TRANSLUCENT);
     loadListeners();
   }, 4000);
@@ -82,7 +83,7 @@ function theMatrix() {
     display.screen.setAlpha(TRANSLUCENT);
     engine.start();
   }, 6000);
-  }
+}
 
 function removeMatrix() {
   removeListeners();
@@ -105,3 +106,28 @@ function removeMatrix() {
 //------------------------------------------------------------------------------------------------------------------------
 /*  call the Matrix */
 theMatrix();
+
+/* const gamePromise = new Promise((resolve, reject) => {
+  resolve();
+  reject()
+});
+
+gamePromise.then(callback);
+gamePromise.catch(ErrorCallback);
+
+//  or 
+function example(){
+  return new Promise((resolve, reject) => {
+    // code;
+    resolve();
+  });
+};
+
+example.then(() => {
+
+});
+
+this.update()
+.then(this.render())
+.catch(console.error());
+ */
