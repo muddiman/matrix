@@ -64,25 +64,34 @@ function removeListeners() {
 }
 
 function resizeWindow() {
-  removeMatrix();
-  display.init();    // = new Display("green");                                     //  a new display with updated screen dimensions
-  matrix.init();
+  // removeMatrix();
+  removeListeners();
+  // clearTimeout(darkness);                                                 //  clear the timeouts
+  // clearTimeout(theMatrix);
+  engine.stop();
+  display.screen.clear(); 
+  display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
+  display.screen.resize();             // a new screen(canvas) is drawn with updated dimensions     // = new Display("green"); 
+  // display.screen.init();                                    //  a new display with updated screen dimensions
+  // matrix.init();
+  theMatrix();
   // matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
   // engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});                                          
-  theMatrix();
+  // theMatrix();
 }
 
 //  Matrix functions
-async function theMatrix() {
+function theMatrix() {
   var darkness = setTimeout( () => {                                         //  dim screen after 8 secs
     display.screen.getDarker(TRANSLUCENT);
     loadListeners();
-  }, 4000);
-  var theMatrix = setTimeout(() => {                                        //  go into the matrix after 10 secs
-    matrix.streamersArr.init();
-    display.screen.setAlpha(TRANSLUCENT);
-    engine.start();
-  }, 6000);
+    var theMatrix = setTimeout(() => {                                        //  go into the matrix after 10 secs
+      matrix.streamersArr.init();
+      display.screen.setAlpha(TRANSLUCENT);
+      display.screen.init();
+      engine.start();
+    }, 3000);
+  }, 3000);
 }
 
 function removeMatrix() {
