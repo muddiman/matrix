@@ -51,13 +51,14 @@ var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.ren
 /*  functions   */
 //  event handling functions 
 function loadListeners() { 
-  window.addEventListener("resize", resizeWindow);                          // get a new display (and Screen)  
+  window.addEventListener("resize", removeMatrix);                          // get a new display (and Screen)  
   window.addEventListener("keypress", removeMatrix);
   window.addEventListener("touchmove", removeMatrix);
   display.screen.CANVAS.addEventListener("mousemove", removeMatrix);       
 }
 
 function removeListeners() {
+  window.removeEventListener("resize", removeMatrix);
   window.removeEventListener("keypress", removeMatrix);
   window.removeEventListener("touchmove", removeMatrix);                     //  remove the event listeners
   display.screen.CANVAS.removeEventListener("mousemove", removeMatrix);
@@ -72,7 +73,7 @@ function resizeWindow() {
   display.screen.clear(); 
   display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
   display.screen.resize();             // a new screen(canvas) is drawn with updated dimensions     // = new Display("green"); 
-  // display.screen.init();                                    //  a new display with updated screen dimensions
+  display.screen.init();                                    //  a new display with updated screen dimensions
   // matrix.init();
   theMatrix();
   // matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
