@@ -115,29 +115,15 @@ function removeMatrix() {
 
 //------------------------------------------------------------------------------------------------------------------------
 /*  call the Matrix */
+/* import { AssetManager } from "/lib/filehandler.mjs";
+const assetManager = new AssetManager();
+var chars = "a";
+
+// assetManager.requestJSON("/lib/characters.JSON", (json)=>{console.log(json);});
+assetManager.getJSON("/lib/characters.JSON", (json)=>{
+  console.log(json.characters);
+  chars = json.characters;
+});
+console.log(chars);
+// console.log(chars.characters); */
 theMatrix();
-
-/* const gamePromise = new Promise((resolve, reject) => {
-  resolve();
-  reject()
-});
-
-gamePromise.then(callback);
-gamePromise.catch(ErrorCallback);
-
-//  or 
-function example(){
-  return new Promise((resolve, reject) => {
-    // code;
-    resolve();
-  });
-};
-
-example.then(() => {
-
-});
-
-this.update()
-.then(this.render())
-.catch(console.error());
- */
