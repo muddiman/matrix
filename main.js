@@ -14,7 +14,7 @@
  *  @author    Roger Clarke (muddiman | .muddicode)
  *  @link      https://www.roger-clarke.com |   https://www.muddicode.com
  *  @email     rogerclarke00@hotmail.com    |   muddiman@hotmail.com             (muddi@muddicode.com | rclarke@roger-clarke.com) 
- *  @version   1.3.1
+ *  @version   2.0.1
  *  @since     2019-02-7
  *  @download  https://www.github.com/muddiman/Matrix
  *  @license   NOT for 'commercial use', otherwise free to use, free to distribute
@@ -35,23 +35,25 @@
 const FPS = 60;
 const TRANSPARENT =   0;
 const TRANSLUCENT = 0.8;
+  
 /*  the imports */
 import { Display } from "/lib/display.mjs";
 import { Matrix }  from "/lib/matrix.mjs";
 import { gEngine } from "/lib/engine.mjs";
 
+
 /*  Display */
-var display = new Display("green");                                        //  TODO:   add color to matrix (2.0.0)
+var display = new Display("green");                                        
 /*  Matrix  */
 var matrix  = new Matrix();
 /*  Engine  */
-var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});        //  TODO:   add fixed-time animation (1.3.0)
+var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});       
 
 //-------------------------------------------------------------------------------------------------------------
 /*  functions   */
 //  event handling functions 
 function loadListeners() { 
-  window.addEventListener("resize", removeMatrix);                          // get a new display (and Screen)  
+  window.addEventListener("resize", removeMatrix);                           
   window.addEventListener("keypress", removeMatrix);
   window.addEventListener("touchmove", removeMatrix);
   display.screen.CANVAS.addEventListener("mousemove", removeMatrix);       
@@ -65,20 +67,15 @@ function removeListeners() {
 }
 
 function resizeWindow() {
-  // removeMatrix();
   removeListeners();
   // clearTimeout(darkness);                                                 //  clear the timeouts
   // clearTimeout(theMatrix);
   engine.stop();
   display.screen.clear(); 
   display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
-  display.screen.resize();             // a new screen(canvas) is drawn with updated dimensions     // = new Display("green"); 
-  display.screen.init();                                    //  a new display with updated screen dimensions
-  // matrix.init();
+  display.screen.resize();             
+  display.screen.init();                                                     //  initialize screen with updated screen dimensions
   theMatrix();
-  // matrix  = new Matrix();                                             //  a new Matrix with updated number of streamers to fit new window
-  // engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});                                          
-  // theMatrix();
 }
 
 //  Matrix functions
@@ -86,7 +83,7 @@ function theMatrix() {
   var darkness = setTimeout( () => {                                         //  dim screen after 8 secs
     display.screen.getDarker(TRANSLUCENT);
     loadListeners();
-    var theMatrix = setTimeout(() => {                                        //  go into the matrix after 10 secs
+    var theMatrix = setTimeout(() => {                                       //  go into the matrix after 10 secs
       matrix.streamersArr.init();
       display.screen.setAlpha(TRANSLUCENT);
       display.screen.init();
@@ -103,7 +100,7 @@ function removeMatrix() {
   display.screen.clear(); 
   display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
   display.screen.init();
-  theMatrix();
+  theMatrix();                                                               //  restart the program 
 }
 
 /*
@@ -115,15 +112,5 @@ function removeMatrix() {
 
 //------------------------------------------------------------------------------------------------------------------------
 /*  call the Matrix */
-/* import { AssetManager } from "/lib/filehandler.mjs";
-const assetManager = new AssetManager();
-var chars = "a";
-
-// assetManager.requestJSON("/lib/characters.JSON", (json)=>{console.log(json);});
-assetManager.getJSON("/lib/characters.JSON", (json)=>{
-  console.log(json.characters);
-  chars = json.characters;
-});
-console.log(chars);
-// console.log(chars.characters); */
 theMatrix();
+
