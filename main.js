@@ -32,7 +32,7 @@
 // if Necessary: An Input Class deals with event handling
 
 /*  the globals */
-const FPS = 60;
+const FPS = 24;
 const TRANSPARENT =   0;
 const TRANSLUCENT = 0.8;
   
@@ -40,7 +40,9 @@ const TRANSLUCENT = 0.8;
 import { Display } from "/lib/display.mjs";
 import { Matrix }  from "/lib/matrix.mjs";
 import { gEngine } from "/lib/engine.mjs";
+import { AssetManager } from "./lib/filehandler.mjs";
 
+  
 
 /*  Display */
 var display = new Display("green");                                        
