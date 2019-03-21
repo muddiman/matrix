@@ -33,45 +33,49 @@
 
 /*  the globals */
 const FPS = 24;
-const TRANSPARENT =   0;
-const TRANSLUCENT = 0.8;
+const IDLE_TIME   = 5000;
+const TRANSPARENT =    0;
+const TRANSLUCENT =  0.8;
   
 /*  the imports */
-import { Display } from "/lib/display.mjs";
-import { Matrix }  from "/lib/matrix.mjs";
-import { gEngine } from "/lib/engine.mjs";
-import { AssetManager } from "./lib/filehandler.mjs";
+
+var darkness, runMatrix;
+
 
   
 
 /*  Display */
+import { Display } from "/lib/display.mjs";
 var display = new Display("green");                                        
 /*  Matrix  */
+import { Matrix }  from "/lib/matrix.mjs";
 var matrix  = new Matrix();
 /*  Engine  */
+import { gEngine } from "/lib/engine.mjs";
 var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});       
+
 
 //-------------------------------------------------------------------------------------------------------------
 /*  functions   */
 //  event handling functions 
-function loadListeners() { 
+function loadListeners() {                            // affix listenners
   window.addEventListener("resize", removeMatrix);                           
-  window.addEventListener("keypress", removeMatrix);
+  window.addEventListener("keydown", removeMatrix);
   window.addEventListener("touchmove", removeMatrix);
   display.screen.CANVAS.addEventListener("mousemove", removeMatrix);       
 }
 
-function removeListeners() {
+function removeListeners() {                          // 
   window.removeEventListener("resize", removeMatrix);
-  window.removeEventListener("keypress", removeMatrix);
+  window.removeEventListener("keydown", removeMatrix);
   window.removeEventListener("touchmove", removeMatrix);                     //  remove the event listeners
   display.screen.CANVAS.removeEventListener("mousemove", removeMatrix);
 }
 
-function resizeWindow() {
+function resizeWindow() {                                           //  what to do when a 'resize' event occurs
   removeListeners();
-  // clearTimeout(darkness);                                                 //  clear the timeouts
-  // clearTimeout(theMatrix);
+  clearTimeout(darkness);                                                 //  clear the timeouts
+  clearTimeout(runMatrix);
   engine.stop();
   display.screen.clear(); 
   display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
@@ -79,25 +83,24 @@ function resizeWindow() {
   display.screen.init();                                                     //  initialize screen with updated screen dimensions
   theMatrix();
 }
-
 //  Matrix functions
 function theMatrix() {
-  var darkness = setTimeout( () => {                                         //  dim screen after 8 secs
+  darkness = setTimeout( () => {                                         //  dim screen after 8 secs
     display.screen.getDarker(TRANSLUCENT);
     loadListeners();
-    var theMatrix = setTimeout(() => {                                       //  go into the matrix after 10 secs
+    runMatrix = setTimeout(() => {                                       //  go into the matrix after 10 secs
       matrix.streamersArr.init();
       display.screen.setAlpha(TRANSLUCENT);
       display.screen.init();
       engine.start();
     }, 3000);
-  }, 3000);
+  }, IDLE_TIME);
 }
 
 function removeMatrix() {
   removeListeners();
-  // clearTimeout(darkness);                                                 //  clear the timeouts
-  // clearTimeout(theMatrix);
+  clearTimeout(darkness);                                                 //  clear the timeouts
+  clearTimeout(runMatrix);
   engine.stop();
   display.screen.clear(); 
   display.screen.setAlpha(TRANSPARENT);                                      //  resets the transparency cycle for getDarker function
@@ -115,4 +118,17 @@ function removeMatrix() {
 //------------------------------------------------------------------------------------------------------------------------
 /*  call the Matrix */
 theMatrix();
+
+
+/*    SETTINGS    */
+/*
+var newMatrix = new Matrix({
+  color     :     "green",
+  speed     :     10,
+  idleTime :     5000,         //  in milliseconds
+});
+
+matrix.runMatrix();
+
+*/
 
