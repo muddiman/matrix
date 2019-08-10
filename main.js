@@ -33,25 +33,17 @@
 
 /*  the globals */
 const FPS = 24;
-const IDLE_TIME   = 5000;
+const IDLE_TIME   = 4000;   //  in milliseconds
 const TRANSPARENT =    0;
 const TRANSLUCENT =  0.8;
-  
-/*  the imports */
-
 var darkness, runMatrix;
-
-
-  
-
-/*  Display */
-import { Display } from "/lib/display.mjs";
+ 
+/*  the imports */
+import { Display  } from "/lib/display.mjs";     //  Display 
+import { Matrix   } from "/lib/matrix.mjs";      //  Matrix
+import { gEngine  } from "/lib/engine.mjs";      //  Engine  
 var display = new Display("green");                                        
-/*  Matrix  */
-import { Matrix }  from "/lib/matrix.mjs";
 var matrix  = new Matrix();
-/*  Engine  */
-import { gEngine } from "/lib/engine.mjs";
 var engine  = new gEngine(1000/FPS, () => {matrix.update();}, () => {display.render(matrix.getStreamersArr());});       
 
 

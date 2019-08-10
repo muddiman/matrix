@@ -14,14 +14,14 @@
  *  @author    Roger Clarke (muddiman | .muddicode)
  *  @link      https://www.roger-clarke.com |   https://www.muddicode.com
  *  @email     rogerclarke00@hotmail.com    |   muddiman@hotmail.com             (muddi@muddicode.com | rclarke@roger-clarke.com) 
- *  @version   1.1.0
+ *  @version   2.0.1
  *  @since     2019-02-7
  *  @download  https://www.github.com/muddiman/Matrix
  *  @license   NOT for 'commercial use', otherwise free to use, free to distribute
  *  @See:      http://www.roger-clarke.com/Matrix/license.html
  *             Free to use and/or distribute for personal or academic purposes.
  *             Must site the source code using the following format at beginning or end of source code file where it was used (in whole or part):
- *             "Clarke, Roger A. (2019) Matrix Code Rain Effect (ver. 1.0.0) [Source Code]. New York, 
+ *             "Clarke, Roger A. (2019) Matrix Code Rain Effect (ver. 2.0.1) [Source Code]. New York, 
  *             NY. http://www.roger-clarke.com, https://www.github.com/muddiman". 
  * 
 ***************************************************************************************************************************************************************************************** */
@@ -35,8 +35,8 @@
 /*    THE GLOBALS      */
 //  imports
 import { ListOfStreamersClass, maxSTREAMERS } from "/lib/stream.mjs";
-import { HEIGHT }  from "/lib/display.mjs";                                  // canvas height in px
-import { Screen }  from "/lib/display.mjs";
+// import { HEIGHT }  from "/lib/display.mjs";                                  // canvas height in px
+import { Screen, HEIGHT }  from "/lib/display.mjs";
 import { gEngine } from "/lib/engine.mjs";
 //  constants
 const maxROWS = Math.floor(HEIGHT/15) + 50 ;                        // 50 acts as a buffer
